@@ -1,23 +1,36 @@
+﻿using MeterApi.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// --- Render icin PORT ayari ---
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://*:{port}");
 
+// --- Servisler ---
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+
+// DeviceStore tek kopya (Singleton) olarak kaydediliyor
+builder.Services.AddSingleton<IDeviceStore, DeviceStore>();
+
+// --- CORS ---
+var allowedOrigins = builder.Configuration["AllowedOrigins"]?.Split(",")
+    ?? new[] { "http://localhost:5173" };
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendPolicy", policy =>
+        policy.WithOrigins(allowedOrigins)
+              .AllowAnyHeader()
+              .AllowAnyMethod());
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
+app.UseCors("FrontendPolicy");
 
 app.MapControllers();
+
+// Health check + Render uyandirma endpointi
+app.MapGet("/health", () => Results.Ok(new { status = "ok", time = DateTime.UtcNow }));
 
 app.Run();
