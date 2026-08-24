@@ -70,4 +70,27 @@ public class DeviceStoreTests
 
         Assert.Null(reading);
     }
+    
+    [Fact]
+    public void GetAll_BosDepodaBosDoner()
+    {
+        var store = new DeviceStore();
+
+        var count = store.GetAll().Count();
+
+        Assert.Equal(0, count);
+    }
+
+    [Fact]
+    public void GetAll_EklenenCihazSayisiniDondurur()
+    {
+        var store = new DeviceStore();
+        store.Add("Sayac-1", "Bodrum");
+        store.Add("Sayac-2", "Cati");
+        store.Add("Sayac-3", "Giris");
+
+        var count = store.GetAll().Count();
+
+        Assert.Equal(3, count);
+    }
 }
