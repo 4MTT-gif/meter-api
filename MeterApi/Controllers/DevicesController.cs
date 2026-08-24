@@ -1,4 +1,4 @@
-﻿using MeterApi.Models;
+using MeterApi.Models;
 using MeterApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +14,9 @@ public class DevicesController : ControllerBase
 
     [HttpGet]
     public ActionResult<IEnumerable<Device>> GetAll() => Ok(_store.GetAll());
+
+    [HttpGet("count")]
+    public ActionResult<object> GetCount() => Ok(new { count = _store.GetAll().Count() });
 
     [HttpGet("{id:guid}")]
     public ActionResult<Device> GetById(Guid id)
@@ -46,3 +49,4 @@ public class DevicesController : ControllerBase
         return reading is null ? NotFound() : Ok(reading);
     }
 }
+
