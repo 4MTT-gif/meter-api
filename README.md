@@ -42,3 +42,9 @@ API http://localhost:8080 adresinde calisir. Swagger yerine test icin /health ve
 Frontend farkli bir origin oldugu icin (github.io), backend CORS ile o adrese izin verir. Izin verilen origin, `AllowedOrigins` environment variable ile yapilandirilir.
 
 ## TestlerDeviceStore icin birim testleri mevcuttur (ekleme, silme, okuma, hata durumlari).
+
+## Ilgili Repo
+
+Frontend (React arayuz): https://github.com/4MTT-gif/meter-frontend
+
+Canli arayuz: https://4mtt-gif.github.io/meter-frontend/
